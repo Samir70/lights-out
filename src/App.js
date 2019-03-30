@@ -7,10 +7,16 @@ import Challenges from './Challenges/Challenges';
 class App extends Component {
   state = {
     boardLights: "0000000100011100010000000",
+    startPos: "0000000100011100010000000",
     numOfLights: 5,
     keys: "ABCDEFGHIJKLMNOPQRSTUVWXY"
   }
   
+  resetToStart = () => {
+    this.setState({boardLights: this.state.startPos})
+  }
+
+  // this handler will update the board if one of the lights is clicked
   boardChangeHandler = (lightIndex) => {
     const toggleLight = (light) => light === "0" ? "1" : "0";
     let board = this.state.boardLights.split("");
@@ -26,20 +32,17 @@ class App extends Component {
     this.setState({ boardLights: board.join(""), numOfLights: count });
   }
 
+  // selects a new start position, depending on the level clicked.
   newBoard = (level) => {
-    var n=0;
-    switch (level) {
-      case "easy" : {
-        n=Math.floor(Math.random()*Challenges.easy.length);
-        this.setState({ boardLights: Challenges.easy[n] })} break;
-      case "medium" : { 
-        n = Math.floor(Math.random()*Challenges.medium.length)
-        this.setState({ boardLights: Challenges.medium[n] }) } break;
-      default: {}
-    }
+    var n=Math.floor(Math.random()*Challenges[level].length);
+    this.setState({ boardLights: Challenges[level][n], startPos: Challenges[level][n] });
   }
 
   render() {
+    // boardlist turns the binary on/off string for the lights into 
+    //    a list of buttons, class depends on on/off of relevant bit
+    // Keys give buttons a name (A-Z) 
+    //     which is intended to be used in later version for checking optimum solution
     let boardList = this.state.boardLights.split("").map((cell, index) => {
       return cell === "0" ? 
         <button 
@@ -56,10 +59,12 @@ class App extends Component {
       <div className="App">
         <ModeSelect 
           onOffString={this.state.boardLights} 
+          startPosition={this.state.startPos}
           score={this.state.numOfLights}
           changeEasy={() => this.newBoard("easy")}
           changeMed={() => this.newBoard("medium")}
-          changeHard={() => this.newBoard("hard")} />
+          changeHard={() => this.newBoard("hard")}
+          resetBoard={this.resetToStart} />
         <PlaySpace board={boardList} />
       </div>
     );

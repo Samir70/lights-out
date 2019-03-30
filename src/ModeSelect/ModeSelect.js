@@ -9,7 +9,11 @@ const ModeSelect = (props) => {
                 <button onClick={() => props.changeMed()}>Another (Medium)</button>
                 <button onClick={() => props.changeHard()}>Another (Hard)</button>
             </div>
-            <p>Current state: {props.onOffString}</p>
+            <p>
+                Current state: {props.onOffString} <br />
+                Start Position: {props.startPosition}
+            </p>
+            <button onClick={props.resetBoard}>Reset to start position</button>
             <p>Score: {props.score}</p>
         </div>
     );
