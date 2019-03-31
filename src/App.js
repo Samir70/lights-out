@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import PlaySpace from './PlaySpace/PlaySpace';
+import Congrats from './Congrats/Congrats';
 import ModeSelect from './ModeSelect/ModeSelect';
 import Challenges from './Challenges/Challenges';
 
@@ -35,7 +36,7 @@ class App extends Component {
   // selects a new start position, depending on the level clicked.
   newBoard = (level) => {
     var n=Math.floor(Math.random()*Challenges[level].length);
-    this.setState({ boardLights: Challenges[level][n], startPos: Challenges[level][n] });
+    this.setState({ boardLights: Challenges[level][n], startPos: Challenges[level][n], numOfLights: 10 });
   }
 
   render() {
@@ -65,7 +66,7 @@ class App extends Component {
           changeMed={() => this.newBoard("medium")}
           changeHard={() => this.newBoard("hard")}
           resetBoard={this.resetToStart} />
-        <PlaySpace board={boardList} />
+          {this.state.numOfLights === 0 ? <Congrats /> : <PlaySpace board={boardList} /> }
       </div>
     );
   }
