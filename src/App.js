@@ -14,7 +14,14 @@ class App extends Component {
   }
   
   resetToStart = () => {
-    this.setState({boardLights: this.state.startPos})
+    this.setState({
+      boardLights: this.state.startPos, 
+      numOfLights: this.countLights(this.state.startPos) })
+  }
+
+  // countLights takes a string of binary indicators for the board, and counts the ones
+  countLights = (board) => {
+    return board.split("").map(x => parseInt(x)).reduce((a, b) => a+b);
   }
 
   // this handler will update the board if one of the lights is clicked
@@ -28,15 +35,16 @@ class App extends Component {
     if (lightIndex % 5 !== 4) { board[lightIndex+1] = toggleLight(board[lightIndex+1])  }
     if (lightIndex % 5 !== 0) { board[lightIndex-1] = toggleLight(board[lightIndex-1])  }
 
-    let count = board.map(x => parseInt(x)).reduce((a, b) => a+b);
-
-    this.setState({ boardLights: board.join(""), numOfLights: count });
+    this.setState({ boardLights: board.join(""), numOfLights: this.countLights(board.join("")) });
   }
 
   // selects a new start position, depending on the level clicked.
   newBoard = (level) => {
     var n=Math.floor(Math.random()*Challenges[level].length);
-    this.setState({ boardLights: Challenges[level][n], startPos: Challenges[level][n], numOfLights: 10 });
+    this.setState({ 
+      boardLights: Challenges[level][n], 
+      startPos: Challenges[level][n], 
+      numOfLights: this.countLights(Challenges[level][n]) });
   }
 
   render() {
