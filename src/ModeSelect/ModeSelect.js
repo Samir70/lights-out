@@ -11,7 +11,7 @@ const ModeSelect = (props) => {
             </div>
             <p>
                 Current state: {props.onOffString} <br />
-                Start Position: {props.startPosition}
+                Lights pressed: {props.buttonsPressed}
             </p>
             <button onClick={props.resetBoard}>Reset to start position</button>
             <p>Score: {props.score}</p>

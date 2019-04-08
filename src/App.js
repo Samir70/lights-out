@@ -9,6 +9,7 @@ class App extends Component {
   state = {
     boardLights: "0000000100011100010000000",
     startPos: "0000000100011100010000000",
+    lightsPressed: "",
     numOfLights: 5,
     keys: "ABCDEFGHIJKLMNOPQRSTUVWXY"
   }
@@ -16,6 +17,7 @@ class App extends Component {
   resetToStart = () => {
     this.setState({
       boardLights: this.state.startPos, 
+      lightsPressed: "",
       numOfLights: this.countLights(this.state.startPos) })
   }
 
@@ -29,13 +31,15 @@ class App extends Component {
     const toggleLight = (light) => light === "0" ? "1" : "0";
     let board = this.state.boardLights.split("");
     board[lightIndex] = toggleLight(board[lightIndex]);
-    //board[lightIndex] === "0" ? board[lightIndex] = "1" : board[lightIndex] = "0";
     if (lightIndex > 4) { board[lightIndex-5] = toggleLight(board[lightIndex-5])  }
     if (lightIndex < 20) { board[lightIndex+5] = toggleLight(board[lightIndex+5])  }
     if (lightIndex % 5 !== 4) { board[lightIndex+1] = toggleLight(board[lightIndex+1])  }
     if (lightIndex % 5 !== 0) { board[lightIndex-1] = toggleLight(board[lightIndex-1])  }
 
-    this.setState({ boardLights: board.join(""), numOfLights: this.countLights(board.join("")) });
+    this.setState({ 
+      boardLights: board.join(""), 
+      lightsPressed: this.state.lightsPressed + this.state.keys[lightIndex],
+      numOfLights: this.countLights(board.join("")) });
   }
 
   // selects a new start position, depending on the level clicked.
@@ -68,7 +72,7 @@ class App extends Component {
       <div className="App">
         <ModeSelect 
           onOffString={this.state.boardLights} 
-          startPosition={this.state.startPos}
+          buttonsPressed={this.state.lightsPressed}
           score={this.state.numOfLights}
           changeEasy={() => this.newBoard("easy")}
           changeMed={() => this.newBoard("medium")}
