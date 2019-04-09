@@ -9,12 +9,21 @@ class App extends Component {
   state = {
     boardLights: "0000000100011100010000000",
     startPos: "0000000100011100010000000",
+    lightsPressed: "",
     numOfLights: 5,
     keys: "ABCDEFGHIJKLMNOPQRSTUVWXY"
   }
   
   resetToStart = () => {
-    this.setState({boardLights: this.state.startPos})
+    this.setState({
+      boardLights: this.state.startPos, 
+      lightsPressed: "",
+      numOfLights: this.countLights(this.state.startPos) })
+  }
+
+  // countLights takes a string of binary indicators for the board, and counts the ones
+  countLights = (board) => {
+    return board.split("").map(x => parseInt(x)).reduce((a, b) => a+b);
   }
 
   // this handler will update the board if one of the lights is clicked
@@ -22,21 +31,25 @@ class App extends Component {
     const toggleLight = (light) => light === "0" ? "1" : "0";
     let board = this.state.boardLights.split("");
     board[lightIndex] = toggleLight(board[lightIndex]);
-    //board[lightIndex] === "0" ? board[lightIndex] = "1" : board[lightIndex] = "0";
     if (lightIndex > 4) { board[lightIndex-5] = toggleLight(board[lightIndex-5])  }
     if (lightIndex < 20) { board[lightIndex+5] = toggleLight(board[lightIndex+5])  }
     if (lightIndex % 5 !== 4) { board[lightIndex+1] = toggleLight(board[lightIndex+1])  }
     if (lightIndex % 5 !== 0) { board[lightIndex-1] = toggleLight(board[lightIndex-1])  }
 
-    let count = board.map(x => parseInt(x)).reduce((a, b) => a+b);
-
-    this.setState({ boardLights: board.join(""), numOfLights: count });
+    this.setState({ 
+      boardLights: board.join(""), 
+      lightsPressed: this.state.lightsPressed + this.state.keys[lightIndex],
+      numOfLights: this.countLights(board.join("")) });
   }
 
   // selects a new start position, depending on the level clicked.
   newBoard = (level) => {
     var n=Math.floor(Math.random()*Challenges[level].length);
-    this.setState({ boardLights: Challenges[level][n], startPos: Challenges[level][n], numOfLights: 10 });
+    this.setState({ 
+      boardLights: Challenges[level][n], 
+      startPos: Challenges[level][n], 
+      lightsPressed: "",
+      numOfLights: this.countLights(Challenges[level][n]) });
   }
 
   render() {
@@ -60,13 +73,15 @@ class App extends Component {
       <div className="App">
         <ModeSelect 
           onOffString={this.state.boardLights} 
-          startPosition={this.state.startPos}
+          buttonsPressed={this.state.lightsPressed}
           score={this.state.numOfLights}
           changeEasy={() => this.newBoard("easy")}
           changeMed={() => this.newBoard("medium")}
           changeHard={() => this.newBoard("hard")}
           resetBoard={this.resetToStart} />
-          {this.state.numOfLights === 0 ? <Congrats /> : <PlaySpace board={boardList} /> }
+          {this.state.numOfLights === 0 ? 
+            <Congrats solution={this.state.lightsPressed} /> : 
+            <PlaySpace board={boardList} /> }
       </div>
     );
   }
