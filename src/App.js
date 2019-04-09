@@ -48,6 +48,7 @@ class App extends Component {
     this.setState({ 
       boardLights: Challenges[level][n], 
       startPos: Challenges[level][n], 
+      lightsPressed: "",
       numOfLights: this.countLights(Challenges[level][n]) });
   }
 
@@ -78,7 +79,9 @@ class App extends Component {
           changeMed={() => this.newBoard("medium")}
           changeHard={() => this.newBoard("hard")}
           resetBoard={this.resetToStart} />
-          {this.state.numOfLights === 0 ? <Congrats /> : <PlaySpace board={boardList} /> }
+          {this.state.numOfLights === 0 ? 
+            <Congrats solution={this.state.lightsPressed} /> : 
+            <PlaySpace board={boardList} /> }
       </div>
     );
   }
