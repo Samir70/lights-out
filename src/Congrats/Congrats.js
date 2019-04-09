@@ -9,7 +9,7 @@ const Congrats = (props) => {
     var solutionMessage = "No special solution message";
     if (quickSol.length < props.solution.length) {
         solutionMessage = "There was a quicker solution. There's no need to press a button twice."
-    } else {solutionMessage = "Well done! You pressed each of these lights: "+quickSol+" once"}
+    } else {solutionMessage = "Well done! You pressed each of these lights: "+quickSol+" once. Genius!"}
 
     return (
         <div>

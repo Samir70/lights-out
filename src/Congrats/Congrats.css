@@ -21,6 +21,7 @@
     animation-name: RGBText;
     animation-duration: 1s;
     animation-iteration-count: infinite;
+    font-size: 30px;
 }
 
 @keyframes RGBText {
