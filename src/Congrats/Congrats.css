@@ -24,6 +24,10 @@
     font-size: 30px;
 }
 
+p {
+    font-size: 20px;
+}
+
 @keyframes RGBText {
     0%   {color : red}
     25%  {color: yellow}

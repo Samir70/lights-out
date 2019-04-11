@@ -71,17 +71,19 @@ class App extends Component {
 
     return (
       <div className="App">
+        <h1>Lights-Out</h1>
         <ModeSelect 
           onOffString={this.state.boardLights} 
           buttonsPressed={this.state.lightsPressed}
-          score={this.state.numOfLights}
-          changeEasy={() => this.newBoard("easy")}
-          changeMed={() => this.newBoard("medium")}
-          changeHard={() => this.newBoard("hard")}
-          resetBoard={this.resetToStart} />
-          {this.state.numOfLights === 0 ? 
-            <Congrats solution={this.state.lightsPressed} /> : 
-            <PlaySpace board={boardList} /> }
+          score={this.state.numOfLights} />
+
+        {this.state.numOfLights === 0 ? 
+            <Congrats 
+              solution={this.state.lightsPressed}              
+              changeEasy={() => this.newBoard("easy")}
+              changeMed={() => this.newBoard("medium")}
+              changeHard={() => this.newBoard("hard")} /> : 
+            <PlaySpace board={boardList} resetBoard={this.resetToStart} /> }
       </div>
     );
   }
