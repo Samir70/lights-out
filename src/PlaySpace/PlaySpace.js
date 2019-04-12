@@ -9,6 +9,7 @@ const PlaySpace = (props) => {
             <div>{props.board.slice(15, 20)}</div>
             <div>{props.board.slice(20)}</div>
             <p />
+            <p>There are {props.score} lights left to put out.</p>
             <button onClick={props.resetBoard}>Reset to start position</button>
             <p />
         </div>
