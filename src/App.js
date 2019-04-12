@@ -4,6 +4,7 @@ import PlaySpace from './PlaySpace/PlaySpace';
 import Congrats from './Congrats/Congrats';
 import ModeSelect from './ModeSelect/ModeSelect';
 import Challenges from './Challenges/Challenges';
+import HowToPlay from './HowToPlay/HowToPlay';
 
 class App extends Component {
   state = {
@@ -11,7 +12,8 @@ class App extends Component {
     startPos: "0000000100011100010000000",
     lightsPressed: "",
     numOfLights: 5,
-    keys: "ABCDEFGHIJKLMNOPQRSTUVWXY"
+    keys: "ABCDEFGHIJKLMNOPQRSTUVWXY", 
+    showHowToPlay: false
   }
   
   resetToStart = () => {
@@ -24,6 +26,11 @@ class App extends Component {
   // countLights takes a string of binary indicators for the board, and counts the ones
   countLights = (board) => {
     return board.split("").map(x => parseInt(x)).reduce((a, b) => a+b);
+  }
+
+  // Let the user decide if they want the how to play page to display
+  toggleHowToPlay = () => {
+    this.setState({ showHowToPlay: !this.state.showHowToPlay })
   }
 
   // this handler will update the board if one of the lights is clicked
@@ -71,17 +78,27 @@ class App extends Component {
 
     return (
       <div className="App">
+        <h1>Lights-Out</h1>
+
+        {this.state.showHowToPlay ? 
+          <HowToPlay clicked={this.toggleHowToPlay} /> : 
+          <button onClick={this.toggleHowToPlay}>Show how to play</button> }
+        <p />
+
+        {this.state.numOfLights === 0 ? 
+            <Congrats 
+              solution={this.state.lightsPressed}              
+              changeEasy={() => this.newBoard("easy")}
+              changeMed={() => this.newBoard("medium")}
+              changeHard={() => this.newBoard("hard")} /> : 
+            <PlaySpace 
+              board={boardList}               
+              score={this.state.numOfLights}
+              resetBoard={this.resetToStart} /> }
+
         <ModeSelect 
           onOffString={this.state.boardLights} 
-          buttonsPressed={this.state.lightsPressed}
-          score={this.state.numOfLights}
-          changeEasy={() => this.newBoard("easy")}
-          changeMed={() => this.newBoard("medium")}
-          changeHard={() => this.newBoard("hard")}
-          resetBoard={this.resetToStart} />
-          {this.state.numOfLights === 0 ? 
-            <Congrats solution={this.state.lightsPressed} /> : 
-            <PlaySpace board={boardList} /> }
+          buttonsPressed={this.state.lightsPressed} />
       </div>
     );
   }
