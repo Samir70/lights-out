@@ -15,7 +15,7 @@ const HowToPlay = (props) => {
              <p>If you now press M the lights will change to this:</p>
              <img src={mAfter} alt="After pressing M" />
           </div>
-          <p>Not only was the M-light was switched off, but L and R-lights were also switched off. 
+          <p>Not only was the M-light switched off, but the L and R-lights were also switched off. 
               And the H and N-lights were switched on. <br /> Notice that, if you press the M-light again, 
               then you just get back to where you started.
           </p>

@@ -1,6 +1,7 @@
 .growPage {
     animation-name: growTopLeft;
     animation-duration: 4s;
+    font-size: 20px
 }
 
 @keyframes growTopLeft {
