@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './App.css';
 import PlaySpace from './PlaySpace/PlaySpace';
 import Congrats from './Congrats/Congrats';
-import ModeSelect from './ModeSelect/ModeSelect';
 import Challenges from './Challenges/Challenges';
 import HowToPlay from './HowToPlay/HowToPlay';
 
@@ -63,7 +62,8 @@ class App extends Component {
     // boardlist turns the binary on/off string for the lights into 
     //    a list of buttons, class depends on on/off of relevant bit
     // Keys give buttons a name (A-Z) 
-    //     which is intended to be used in later version for checking optimum solution
+    //     these are used to to record which lights are pressed and 
+    //     the congrats component checks if some keys were pressed twice.
     let boardList = this.state.boardLights.split("").map((cell, index) => {
       return cell === "0" ? 
         <button 
@@ -75,6 +75,17 @@ class App extends Component {
           className="lightOn"  
           onClick={() => this.boardChangeHandler(index)} >{this.state.keys[index]}</button>
     });
+
+    // If developing, then it can be useful to see the string for the boardlights
+    // But it isn't useful for players and just gets in the way.
+    const developing = false; //set to false unless developing
+    var devData = "";
+    if (developing) {
+      devData = <p> 
+        Current position: {this.state.boardLights} <br />
+        Keys Pressed: {this.state.lightsPressed}
+      </p>
+    }
 
     return (
       <div className="App">
@@ -95,10 +106,8 @@ class App extends Component {
               board={boardList}               
               score={this.state.numOfLights}
               resetBoard={this.resetToStart} /> }
-
-        <ModeSelect 
-          onOffString={this.state.boardLights} 
-          buttonsPressed={this.state.lightsPressed} />
+        
+        {devData}
       </div>
     );
   }
